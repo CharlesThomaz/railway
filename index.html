@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Pessoa</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            margin: auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        #mensagem {
+            margin-top: 16px;
+            color: #333;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- ... seu conteúdo HTML continua aqui ... -->
+</body>
+</html>
+
+<body>
+    <h1>Formulário de Pessoa</h1>
+    
+    <form id="formulario">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" required>
+        <br>
+
+        <label for="idade">Idade:</label>
+        <input type="number" id="idade" name="idade" required>
+        <br>
+
+        <button type="button" onclick="adicionarPessoa()">Adicionar Pessoa</button>
+    </form>
+
+    <div id="mensagem"></div>
+
+    <script>
+        async function adicionarPessoa() {
+            const nome = document.getElementById('nome').value;
+            const idade = document.getElementById('idade').value;
+
+            try {
+                const response = await fetch('/adicionar_pessoa', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `nome=${encodeURIComponent(nome)}&idade=${encodeURIComponent(idade)}`,
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('mensagem').innerHTML = data.mensagem;
+                } else {
+                    document.getElementById('mensagem').innerHTML = data.erro;
+                }
+            } catch (error) {
+                console.error('Erro na solicitação:', error);
+            }
+        }
+    </script>
+</body>
+</html>
